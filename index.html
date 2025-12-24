@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAVORITE GARDEN</title>
+    <style>
+        :root { --main: #2ecc71; --dark: #1b3d18; --gold: #f1c40f; }
+        body { background: var(--main); font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; height: 100vh; color: #333; overflow: hidden; }
+        
+        #auth-screen { position: fixed; inset: 0; background: linear-gradient(135deg, var(--dark), #2ecc71); z-index: 2000; display: flex; justify-content: center; align-items: center; }
+        .auth-card { background: white; padding: 30px; border-radius: 20px; width: 300px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .auth-card input { width: 100%; padding: 10px; margin: 10px 0; border: 2px solid #eee; border-radius: 8px; box-sizing: border-box; }
+
+        #sidebar { width: 320px; background: var(--dark); color: white; padding: 15px; display: flex; flex-direction: column; box-shadow: 5px 0 15px rgba(0,0,0,0.3); }
+        #main-game { flex-grow: 1; display: flex; flex-direction: column; align-items: center; padding: 20px; overflow-y: auto; background: #a8e063; }
+
+        .stats { background: white; padding: 10px 30px; border-radius: 50px; display: flex; gap: 20px; font-weight: bold; font-size: 20px; margin-bottom: 15px; }
+        .garden { display: grid; grid-template-columns: repeat(auto-fill, 75px); justify-content: center; gap: 10px; width: 100%; max-width: 460px; background: #8d6e63; padding: 15px; border-radius: 15px; border: 6px solid #5d4037; }
+        .plot { width: 75px; height: 75px; background: #795548; border-radius: 50%; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 30px; transition: 0.15s; }
+        
+        .tab-btn { flex: 1; padding: 10px; border: none; cursor: pointer; background: rgba(255,255,255,0.1); color: white; font-weight: bold; }
+        .tab-btn.active { background: var(--gold); color: black; }
+        .list-container { flex-grow: 1; overflow-y: auto; margin: 10px 0; }
+        .item { padding: 10px; margin: 5px 0; background: rgba(255,255,255,0.05); border-radius: 8px; display: flex; justify-content: space-between; cursor: pointer; }
+        .item.selected { border: 2px solid var(--gold); background: rgba(241, 196, 15, 0.2); }
+        
+        .pet-card { background: rgba(255,255,255,0.1); padding: 8px; margin: 4px; border-radius: 8px; display: flex; align-items: center; gap: 10px; }
+        .pet-boris { border: 2px solid var(--gold); box-shadow: 0 0 10px var(--gold); }
+
+        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 20px; width: 340px; z-index: 1000; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
+        .btn { padding: 10px 15px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div id="auth-screen">
+    <div class="auth-card">
+        <h1 style="color:var(--dark)">FAVORITE GARDEN</h1>
+        <input type="text" id="log" placeholder="Логін">
+        <input type="password" id="pas" placeholder="Пароль">
+        <button class="btn" style="background:var(--dark); color:white; width:100%" onclick="login()">ГРАТИ</button>
+    </div>
+</div>
+
+<div id="sidebar">
+    <h2 id="u-name">👤 Садівник</h2>
+    <div style="display:flex;">
+        <button id="t1" class="tab-btn active" onclick="tab('seeds')">Насіння</button>
+        <button id="t2" class="tab-btn" onclick="tab('pets')">Вихованці</button>
+    </div>
+    
+    <div id="seeds-list" class="list-container"></div>
+    <div id="pets-list" class="list-container" style="display:none"></div>
+
+    <div style="background:rgba(0,0,0,0.3); padding:10px; border-radius:12px;">
+        <div>Склад: <span id="ui-storage" style="color:var(--gold)">0</span> 🪙</div>
+        <div style="display:flex; gap:5px; margin-top:5px;">
+            <input type="text" id="promo" placeholder="Промокод" style="width:70%; padding:5px; border-radius:5px; border:none;">
+            <button onclick="usePromo()" class="btn" style="padding:5px 10px;">OK</button>
+        </div>
+    </div>
+</div>
+
+<div id="main-game">
+    <div class="stats">
+        <span>🪙 <span id="ui-coins">0</span></span>
+        <span>🥚 <span id="ui-eggs">0</span></span>
+        <span id="auto-status" style="font-size:12px; color:#27ae60"></span>
+    </div>
+    
+    <div class="garden" id="garden"></div>
+
+    <div style="margin-top:20px;">
+        <button class="btn" style="background:var(--gold)" onclick="openShop('S')">🌱 Магазин</button>
+        <button class="btn" style="background:#3498db; color:white" onclick="openShop('I')">🔧 Покращення</button>
+        <button class="btn" style="background:#e67e22; color:white" onclick="sellAll()">💰 ПРОДАТИ ВСЕ</button>
+    </div>
+</div>
+
+<div id="shop-modal" class="modal">
+    <h3 id="shop-title">Магазин</h3>
+    <div id="shop-items" style="max-height:350px; overflow-y:auto;"></div>
+    <button class="btn" style="width:100%; margin-top:10px;" onclick="closeShop()">Закрити</button>
+</div>
+
+<script>
+    const PLANTS = {
+        carrot:   {n:'Морква', e:'🥕', c:50, s:100, t:3000},
+        pea:      {n:'Горох', e:'🫛', c:150, s:350, t:2000},
+        cucumber: {n:'Огірок', e:'🥒', c:400, s:1000, t:5000},
+        potato:   {n:'Картопля', e:'🥔', c:800, s:2200, t:7000},
+        pepper:   {n:'Перець', e:'🫑', c:1500, s:4500, t:6000},
+        tomato:   {n:'Томат', e:'🍅', c:2500, s:8000, t:8000},
+        eggplant: {n:'Баклажан', e:'🍆', c:5000, s:16000, t:10000},
+        grapes:   {n:'Виноград', e:'🍇', c:10000, s:35000, t:12000},
+        banana:   {n:'Банан', e:'🍌', c:25000, s:90000, t:15000},
+        orange:   {n:'Мандарин', e:'🍊', c:60000, s:220000, t:18000},
+        maple:    {n:'Клен', e:'🍁', c:90000, s:350000, t:20000},
+        watermelon:{n:'Кавун', e:'🍉', c:150000, s:600000, t:20000},
+        pineapple:{n:'Ананас', e:'🍍', c:300000, s:1200000, t:22000},
+        dragon:   {n:'Пітая', e:'🐉', c:600000, s:3000000, t:25000},
+        cactus:   {n:'Кактус', e:'🌵', c:1500000, s:8000000, t:30000},
+        egg:      {n:'Яйце', e:'🥚', c:2500, s:0, t:5000}
+    };
+
+    let p = {name:"", pass:"", coins:200, storage:0, plots:12, seeds:{carrot:5}, pets:[], usedPromos:[], auto:false};
+    let cur = 'carrot';
+
+    function login() {
+        const id = document.getElementById('log').value.trim();
+        const ps = document.getElementById('pas').value.trim();
+        if(!id || !ps) return alert("Введіть логін та пароль!");
+        let s = localStorage.getItem('fg_ultra_'+id);
+        if(s) {
+            let d = JSON.parse(s);
+            if(d.pass !== ps) return alert("Пароль невірний!");
+            p = d;
+        } else { p.name=id; p.pass=ps; }
+        document.getElementById('auth-screen').style.display='none';
+        document.getElementById('u-name').innerText = "👤 "+p.name;
+        if(p.auto) setInterval(sellAll, 3000);
+        init();
+    }
+
+    function init() { renderGarden(); renderInv(); updateUI(); setInterval(save, 5000); }
+
+    function renderGarden() {
+        const g = document.getElementById('garden'); g.innerHTML = '';
+        for(let i=0; i<p.plots; i++) {
+            const d = document.createElement('div'); d.className = 'plot'; d.innerHTML = '🟫';
+            d.onclick = () => {
+                if(d.innerHTML === '🟫' && p.seeds[cur] > 0) {
+                    p.seeds[cur]--; let type = cur; d.innerHTML = (type==='egg'?'🥚':'🌱');
+                    renderInv();
+                    let time = PLANTS[type].t;
+                    if(p.pets.some(x=>x.id==='ant')) time *= 0.7;
+                    if(p.pets.some(x=>x.id==='boris')) time *= 0.5;
+
+                    setTimeout(() => {
+                        if(type==='egg') {
+                            let r = Math.random();
+                            let pet = r > 0.4 ? {id:'dog', n:'Собака', e:'⚪'} : {id:'ant', n:'Мураха', e:'🟤'};
+                            p.pets.push(pet); d.innerHTML = pet.e;
+                            setTimeout(()=>{ d.innerHTML='🟫'; renderPets(); }, 1500);
+                        } else {
+                            d.innerHTML = PLANTS[type].e; d.dataset.v = PLANTS[type].s;
+                            if(p.pets.some(x=>x.id==='boris') && Math.random() < 0.15) {
+                                d.style.boxShadow = "inset 0 0 15px gold"; d.dataset.v *= 5;
+                            }
+                        }
+                    }, time);
+                } else if(d.dataset.v) {
+                    let bonus = 1 + (p.pets.filter(x=>x.id==='dog').length * 0.1);
+                    p.storage += Math.floor(d.dataset.v * bonus);
+                    d.innerHTML = '🟫'; d.style.boxShadow = "none"; delete d.dataset.v; updateUI();
+                }
+            };
+            g.appendChild(d);
+        }
+    }
+
+    function renderInv() {
+        const c = document.getElementById('seeds-list'); c.innerHTML = '';
+        for(let k in PLANTS) {
+            const i = document.createElement('div'); i.className = `item ${cur===k?'selected':''}`;
+            i.onclick = () => { cur = k; renderInv(); };
+            i.innerHTML = `<span>${PLANTS[k].e} ${PLANTS[k].n}</span> <b>${p.seeds[k]||0}</b>`;
+            c.appendChild(i);
+        }
+    }
+
+    function renderPets() {
+        const c = document.getElementById('pets-list'); c.innerHTML = '';
+        p.pets.forEach(pet => {
+            const d = document.createElement('div');
+            d.className = `pet-card ${pet.id==='boris'?'pet-boris':''}`;
+            d.innerHTML = `<span>${pet.e}</span> <div><b>${pet.n}</b><br><small>${getSkill(pet.id)}</small></div>`;
+            c.appendChild(d);
+        });
+    }
+
+    function getSkill(id) {
+        if(id==='dog') return "+10% до ціни";
+        if(id==='ant') return "-30% час росту";
+        if(id==='boris') return "БОНУС x2 швидкість та ЗОЛОТО";
+    }
+
+    function usePromo() {
+        let code = document.getElementById('promo').value.toUpperCase().trim();
+        if(p.usedPromos.includes(code)) return alert("Ви вже використали цей код!");
+        
+        if(code === 'BORIS') {
+            p.pets.push({id:'boris', n:'Кот Борис', e:'🟠'}); p.usedPromos.push(code); alert("Борис активований!");
+        } else if(code === 'FREEGG') {
+            p.coins += 1000; p.usedPromos.push(code); alert("+1000 монет!");
+        } else if(code === 'FREEEGG') {
+            p.seeds.egg = (p.seeds.egg||0)+1; p.usedPromos.push(code); alert("Яйце отримано!");
+        } else { return alert("Невірний код!"); }
+        
+        document.getElementById('promo').value = ''; updateUI(); renderInv(); save();
+    }
+
+    function openShop(mode) {
+        const c = document.getElementById('shop-items'); c.innerHTML = '';
+        if(mode === 'S') {
+            for(let k in PLANTS) if(k!=='egg') c.innerHTML += `<div class="item"><span>${PLANTS[k].e} ${PLANTS[k].n}</span> <button class="btn" onclick="buy('${k}',${PLANTS[k].c})">${PLANTS[k].c} 🪙</button></div>`;
+        } else if(mode === 'I') {
+            c.innerHTML = `<div class="item"><span>+5 Грядок</span> <button class="btn" onclick="buyPlot()">5000 🪙</button></div>`;
+            c.innerHTML += `<div class="item"><span>Автозбір 🤖</span> <button class="btn" onclick="buyAuto()">15000 🪙</button></div>`;
+            c.innerHTML += `<div class="item"><span>🥚 Яйце вихованця</span> <button class="btn" onclick="buy('egg',2500)">2500 🪙</button></div>`;
+        }
+        document.getElementById('shop-modal').style.display='block';
+    }
+
+    function buy(k,c) { if(p.coins>=c){ p.coins-=c; p.seeds[k]=(p.seeds[k]||0)+1; updateUI(); renderInv(); save(); } }
+    function buyPlot() { if(p.coins>=5000){ p.coins-=5000; p.plots+=5; renderGarden(); updateUI(); save(); } }
+    function buyAuto() { if(p.coins>=15000){ p.coins-=15000; p.auto=true; updateUI(); alert("Автозбір активовано!"); setInterval(sellAll,3000); save(); } }
+
+    function sellAll() { if(p.storage > 0) { p.coins += p.storage; p.storage = 0; updateUI(); save(); } }
+    function updateUI() {
+        document.getElementById('ui-coins').innerText = p.coins;
+        document.getElementById('ui-storage').innerText = p.storage;
+        document.getElementById('ui-eggs').innerText = p.seeds.egg || 0;
+        document.getElementById('auto-status').innerText = p.auto ? "🤖 Авто: ВКЛ" : "";
+    }
+    function tab(t) {
+        document.getElementById('seeds-list').style.display = t==='seeds'?'block':'none';
+        document.getElementById('pets-list').style.display = t==='pets'?'block':'none';
+        document.getElementById('t1').className = t==='seeds'?'tab-btn active':'tab-btn';
+        document.getElementById('t2').className = t==='pets'?'tab-btn active':'tab-btn';
+        if(t==='pets') renderPets();
+    }
+    function save() { if(p.name) localStorage.setItem('fg_ultra_'+p.name, JSON.stringify(p)); }
+    function closeShop() { document.getElementById('shop-modal').style.display='none'; }
+</script>
+</body>
+</html>
