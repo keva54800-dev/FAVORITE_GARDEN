@@ -8,33 +8,34 @@
         :root { 
             --main: #2ecc71; --dark: #1b3d18; --gold: #f1c40f; 
             --purple: #9b59b6; --neon: #39ff14; 
-            --rainbow: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8f00ff); 
         }
         body { background: var(--main); font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; height: 100vh; color: #333; overflow: hidden; }
         
         #auth-screen { position: fixed; inset: 0; background: #27ae60; z-index: 2000; display: flex; justify-content: center; align-items: center; }
-        .auth-card { background: white; padding: 40px; border-radius: 30px; width: 350px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
-        .auth-card input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; font-size: 16px; }
-        .auth-card button { width: 100%; padding: 15px; border: none; border-radius: 10px; background: #1b3d18; color: white; font-weight: bold; cursor: pointer; }
+        .auth-card { background: white; padding: 25px; border-radius: 25px; width: 280px; text-align: center; }
+        .auth-card input { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; }
+        .auth-card button { width: 100%; padding: 12px; border: none; border-radius: 10px; background: #1b3d18; color: white; font-weight: bold; cursor: pointer; }
 
-        #sidebar { width: 420px; background: var(--dark); color: white; padding: 15px; display: flex; flex-direction: column; box-shadow: 5px 0 15px rgba(0,0,0,0.3); }
-        .tab-btn { flex: 1; padding: 12px; border: none; cursor: pointer; background: rgba(255,255,255,0.1); color: white; font-weight: bold; }
+        #sidebar { width: 240px; background: var(--dark); color: white; padding: 12px; display: flex; flex-direction: column; box-shadow: 5px 0 15px rgba(0,0,0,0.3); }
+        .tab-btn { flex: 1; padding: 8px; border: none; cursor: pointer; background: rgba(255,255,255,0.1); color: white; font-weight: bold; font-size: 10px; }
         .tab-btn.active { background: var(--gold); color: black; }
         
-        .list-container { flex-grow: 1; overflow-y: auto; margin: 10px 0; padding-right: 5px; }
-        .ui-item { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); margin-bottom: 4px; padding: 10px 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; font-weight: 600; cursor: pointer; }
+        .list-container { flex-grow: 1; overflow-y: auto; margin: 8px 0; }
+        .ui-item { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); margin-bottom: 4px; padding: 6px 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 13px; }
         .ui-item.selected { border: 2px solid var(--gold); background: rgba(241, 196, 15, 0.15); }
 
-        #main-game { flex-grow: 1; display: flex; flex-direction: column; align-items: center; padding: 20px; overflow-y: auto; background: #a8e063; }
-        #garden-container.fence { border: 15px solid #5d4037; background: #a1887f; padding: 20px; border-radius: 25px; }
-        .stats { background: white; padding: 10px 30px; border-radius: 50px; display: flex; gap: 15px; font-weight: bold; margin-bottom: 15px; }
-        .garden { display: grid; grid-template-columns: repeat(auto-fill, 80px); justify-content: center; gap: 10px; width: 100%; max-width: 650px; }
-        .plot { width: 80px; height: 80px; background: #795548; border-radius: 15px; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 35px; border: 3px solid rgba(0,0,0,0.2); }
-        .plot.gold-plot { border-color: var(--gold); box-shadow: 0 0 10px var(--gold); }
+        #main-game { flex-grow: 1; display: flex; flex-direction: column; align-items: center; padding: 12px; overflow-y: auto; background: #a8e063; }
+        .stats { background: white; padding: 6px 18px; border-radius: 30px; display: flex; gap: 12px; font-weight: bold; margin-bottom: 12px; font-size: 13px; }
         
-        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 25px; border-radius: 25px; width: 450px; z-index: 1000; box-shadow: 0 0 100px rgba(0,0,0,0.5); }
-        .btn { padding: 10px 15px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; }
-        .check-box { width: 25px; height: 25px; border: 2px solid #ddd; border-radius: 5px; cursor: pointer; }
+        .garden { display: grid; grid-template-columns: repeat(auto-fit, minmax(65px, 1fr)); gap: 6px; width: 100%; max-width: 450px; background: rgba(0,0,0,0.05); padding: 8px; border-radius: 15px; }
+        .plot { aspect-ratio: 1 / 1; background: #8d6e63; border-radius: 10px; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 24px; border: 2px solid rgba(0,0,0,0.2); }
+        .plot.gold-plot { border-color: var(--gold); box-shadow: 0 0 8px var(--gold); }
+        
+        .controls { display: flex; gap: 8px; margin-top: 12px; width: 100%; max-width: 350px; }
+        .btn { flex: 1; padding: 10px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; font-size: 13px; }
+
+        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 20px; width: 85%; max-width: 320px; z-index: 1000; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
+        .check-box { width: 20px; height: 20px; border: 2px solid #ddd; border-radius: 4px; cursor: pointer; }
         .check-box.active { background: var(--main); }
     </style>
 </head>
@@ -42,7 +43,7 @@
 
 <div id="auth-screen">
     <div class="auth-card">
-        <h1>FAVORITE GARDEN</h1>
+        <h2 style="margin:0 0 15px 0; font-size: 20px;">FAVORITE GARDEN</h2>
         <input type="text" id="log" placeholder="Логін">
         <input type="password" id="pas" placeholder="Пароль">
         <button onclick="login()">ГРАТИ</button>
@@ -50,20 +51,20 @@
 </div>
 
 <div id="sidebar">
-    <h2 id="u-name">👤 Садівник</h2>
-    <div style="display:flex; margin-bottom: 10px;">
+    <h4 id="u-name" style="margin: 0 0 10px 0;">👤 Садівник</h4>
+    <div style="display:flex; margin-bottom: 8px; overflow: hidden; border-radius: 6px;">
         <button id="t1" class="tab-btn active" onclick="tab('seeds')">🌱 НАСІННЯ</button>
         <button id="t2" class="tab-btn" onclick="tab('pets')">🐾 ПИТОМЦІ</button>
         <button id="t3" class="tab-btn" onclick="tab('storage')">📦 СКЛАД</button>
     </div>
     <div id="seeds-list" class="list-container"></div>
     <div id="pets-list" class="list-container" style="display:none">
-        <button class="btn" style="width:100%; background:var(--purple); color:white; margin-bottom:10px;" onclick="openMutMachine()">🧬 МАШИНА МУТАЦІЙ</button>
+        <button class="btn" style="width:100%; background:var(--purple); color:white; margin-bottom:8px; font-size:11px;" onclick="openMutMachine()">🧬 МАШИНА МУТАЦІЙ</button>
         <div id="pets-content"></div>
     </div>
     <div id="storage-list" class="list-container" style="display:none"></div>
-    <div style="background:rgba(0,0,0,0.4); padding:15px; border-radius:15px; margin-top: auto;">
-        <div>🪙 Баланс: <span id="ui-coins-side" style="color:var(--gold); font-size: 18px;">0</span></div>
+    <div style="background:rgba(255,255,255,0.1); padding:8px; border-radius:8px; margin-top: auto;">
+        <div style="font-size: 12px;">🪙 Баланс: <span id="ui-coins-side" style="color:var(--gold); font-weight: bold;">0</span></div>
     </div>
 </div>
 
@@ -71,39 +72,39 @@
     <div class="stats">
         <span>🪙 <span id="ui-coins">0</span></span>
         <span>📦 <span id="ui-storage-val">0</span></span>
-        <span>🟩 <span id="ui-plots-count">0</span> Грядок</span>
+        <span>🟩 <span id="ui-plots-count">0</span></span>
     </div>
     <div id="garden-container"><div class="garden" id="garden"></div></div>
-    <div style="display:flex; gap:10px; margin-top:20px;">
-        <button class="btn" style="background:var(--gold); width:150px;" onclick="openShop()">🛒 МАГАЗИН</button>
-        <button class="btn" style="background:#e67e22; color:white; width:150px;" onclick="sellAll()">💰 ПРОДАТИ ВСЕ</button>
+    <div class="controls">
+        <button class="btn" style="background:var(--gold);" onclick="openShop()">🛒 МАГАЗИН</button>
+        <button class="btn" style="background:#e67e22; color:white;" onclick="sellAll()">💰 ПРОДАТИ</button>
     </div>
 </div>
 
 <div id="shop-modal" class="modal">
-    <div style="display:flex; gap:5px; margin-bottom:15px; overflow-x: auto;">
-        <button class="btn" onclick="renderShop('seeds')">🌱 Насіння</button>
-        <button class="btn" onclick="renderShop('eggs')">🥚 Яйця</button>
-        <button class="btn" onclick="renderShop('mut')">🧪 Мутації</button>
-        <button class="btn" onclick="renderShop('dec')">🎨 Прикраси</button>
-        <button class="btn" style="background: #3498db; color: white;" onclick="openPromo()">🎟️ Промо</button>
+    <div style="display:flex; gap:4px; margin-bottom:12px; overflow-x: auto; padding-bottom:5px;">
+        <button class="btn" style="font-size:10px; padding:6px;" onclick="renderShop('seeds')">🌱 Насіння</button>
+        <button class="btn" style="font-size:10px; padding:6px;" onclick="renderShop('eggs')">🥚 Яйця</button>
+        <button class="btn" style="font-size:10px; padding:6px;" onclick="renderShop('mut')">🧪 Мут</button>
+        <button class="btn" style="font-size:10px; padding:6px;" onclick="renderShop('dec')">🎨 Декор</button>
+        <button class="btn" style="background:#3498db; color:white; font-size:10px; padding:6px;" onclick="openPromo()">🎟️</button>
     </div>
-    <div id="shop-items" style="max-height:350px; overflow-y:auto;"></div>
-    <button class="btn" style="width:100%; margin-top:10px;" onclick="closeShop()">Закрити</button>
+    <div id="shop-items" style="max-height:220px; overflow-y:auto;"></div>
+    <button class="btn" style="width:100%; margin-top:10px; background:#ddd;" onclick="closeShop()">Закрити</button>
 </div>
 
 <div id="mut-modal" class="modal">
-    <h3 style="color:var(--purple)">Машина Мутацій 🧬</h3>
-    <div id="mut-selection" style="max-height:300px; overflow-y:auto;"></div>
-    <button class="btn" style="width:100%; background:var(--purple); color:white; margin-top:15px;" onclick="doMutation()">МУТУВАТИ ✅</button>
-    <button class="btn" style="width:100%; margin-top:5px;" onclick="closeMut()">Скасувати</button>
+    <h4 style="color:var(--purple); margin:0 0 10px 0;">Машина Мутацій 🧬</h4>
+    <div id="mut-selection" style="max-height:200px; overflow-y:auto;"></div>
+    <button class="btn" style="width:100%; background:var(--purple); color:white; margin-top:10px;" onclick="doMutation()">МУТУВАТИ ✅</button>
+    <button class="btn" style="width:100%; margin-top:5px; background:#ddd;" onclick="closeMut()">Назад</button>
 </div>
 
 <div id="promo-modal" class="modal">
-    <h3>🎟️ Активувати Промокод</h3>
-    <input type="text" id="promo-input" placeholder="Введіть код..." style="width:100%; padding:10px; border-radius:10px; border:1px solid #ddd; margin-bottom:10px;">
+    <h4 style="margin:0 0 10px 0;">🎟️ Промокод</h4>
+    <input type="text" id="promo-input" placeholder="Код..." style="width:100%; padding:10px; border-radius:10px; border:1px solid #ddd; margin-bottom:10px; box-sizing:border-box;">
     <button class="btn" style="width:100%; background:var(--gold);" onclick="usePromo()">Активувати</button>
-    <button class="btn" style="width:100%; margin-top:5px;" onclick="this.parentElement.style.display='none'">Закрити</button>
+    <button class="btn" style="width:100%; margin-top:5px; background:#ddd;" onclick="this.parentElement.style.display='none'">Назад</button>
 </div>
 
 <script>
@@ -128,11 +129,10 @@
         tree: {n:'Ялинка', e:'🎄', c:150000000, s:1200000000, t:300000},
         cactus: {n:'Кактус', e:'🌵', c:500000000, s:5000000000, t:600000}
     };
+    const EGGS = { normal: {n:'Звичайне', e:'🥚', c:5000, t:10000}, snow: {n:'Сніжне', e:'❄️', c:60000, t:20000} };
+    const MUT_TYPES = { 'Золота': 'var(--gold)', 'Нічна': 'var(--purple)', 'Неонова': 'var(--neon)' };
 
-    const EGGS = { normal: {n:'Звичайне Яйце', e:'🥚', c:5000, t:10000}, snow: {n:'Сніжне Яйце', e:'❄️', c:60000, t:20000} };
-    const MUT_TYPES = { 'Золота': 'var(--gold)', 'Нічна': 'var(--purple)', 'Неонова': 'var(--neon)', 'Радужна': 'var(--rainbow)' };
-
-    let p = { name:"", pass:"", coins:1000, storage:{}, plots:12, seeds:{carrot:5}, eggsInv:{}, pets:[], mutations:[], favFruit:null, fence:false, goldPlots:false, usedPromos:[] };
+    let p = { name:"", pass:"", coins:1000, storage:{}, plots:12, seeds:{carrot:5}, eggsInv:{}, pets:[], mutations:[], goldPlots:false, usedPromos:[] };
     let curItem = {type:'seed', id:'carrot'};
     let selPets = []; let selMutIdx = -1;
 
@@ -140,11 +140,11 @@
         const id = document.getElementById('log').value.trim();
         const ps = document.getElementById('pas').value.trim();
         if(!id || !ps) return;
-        let s = localStorage.getItem('fg_v2026_'+id);
+        let s = localStorage.getItem('fg_full_v2_'+id);
         if(s) { p = JSON.parse(s); if(p.pass!==ps) return; }
         else { p.name=id; p.pass=ps; }
         document.getElementById('auth-screen').style.display='none';
-        document.getElementById('u-name').innerText = "👤 "+p.name;
+        document.getElementById('u-name').innerText = "👤 " + p.name;
         init();
     }
 
@@ -152,8 +152,6 @@
 
     function renderGarden() {
         const g = document.getElementById('garden'); g.innerHTML = '';
-        const cont = document.getElementById('garden-container');
-        cont.className = p.fence ? 'fence' : '';
         for(let i=0; i<p.plots; i++) {
             const d = document.createElement('div'); d.className = 'plot' + (p.goldPlots?' gold-plot':'');
             d.innerHTML = '🟫';
@@ -172,8 +170,8 @@
                     p.storage[d.dataset.val] = (p.storage[d.dataset.val]||0)+1;
                     d.innerHTML = '🟫'; delete d.dataset.mode; updateUI(); renderStorage();
                 } else if(d.dataset.mode === 'egg') {
-                    let pet = d.dataset.val==='snow' ? {n:'Пінгвін',e:'🐧'} : {n:'Пес',e:'🐶'};
-                    p.pets.push(pet); d.innerHTML = '🟫'; delete d.dataset.mode; renderPets();
+                    p.pets.push(d.dataset.val==='snow' ? {n:'Пінгвін',e:'🐧'} : {n:'Пес',e:'🐶'});
+                    d.innerHTML = '🟫'; delete d.dataset.mode; renderPets();
                 }
             };
             g.appendChild(d);
@@ -194,18 +192,22 @@
 
     function renderStorage() {
         const c = document.getElementById('storage-list'); c.innerHTML = '';
-        for(let t in p.storage) if(p.storage[t] > 0) c.innerHTML += `<div class="ui-item ${p.favFruit===t?'selected':''}" onclick="setFav('${t}')"><span>${PLANTS[t].e} ${PLANTS[t].n}</span><span>${p.storage[t]}</span></div>`;
+        for(let t in p.storage) if(p.storage[t] > 0) c.innerHTML += `<div class="ui-item"><span>${PLANTS[t].e} ${PLANTS[t].n}</span><span>${p.storage[t]}</span></div>`;
+    }
+
+    function renderPets() {
+        const c = document.getElementById('pets-content'); c.innerHTML = '';
+        p.pets.forEach(pet => c.innerHTML += `<div class="ui-item"><span>${pet.e} ${pet.n}</span><small style="color:${MUT_TYPES[pet.mut]}">${pet.mut||''}</small></div>`);
     }
 
     function renderShop(tab) {
         const c = document.getElementById('shop-items'); c.innerHTML = '';
-        if(tab==='seeds') for(let k in PLANTS) c.innerHTML += `<div class="ui-item"><span>${PLANTS[k].e} ${PLANTS[k].n}</span><button class="btn" onclick="buy('s','${k}',${PLANTS[k].c})">${PLANTS[k].c}</button></div>`;
-        if(tab==='eggs') for(let k in EGGS) c.innerHTML += `<div class="ui-item"><span>${EGGS[k].e} ${EGGS[k].n}</span><button class="btn" onclick="buy('e','${k}',${EGGS[k].c})">${EGGS[k].c}</button></div>`;
-        if(tab==='mut') for(let k in MUT_TYPES) c.innerHTML += `<div class="ui-item"><span>🧪 ${k}</span><button class="btn" onclick="buy('m','${k}',150000)">150к</button></div>`;
+        if(tab==='seeds') for(let k in PLANTS) c.innerHTML += `<div class="ui-item"><span>${PLANTS[k].e} ${PLANTS[k].n}</span><button onclick="buy('s','${k}',${PLANTS[k].c})">${PLANTS[k].c}</button></div>`;
+        if(tab==='eggs') for(let k in EGGS) c.innerHTML += `<div class="ui-item"><span>${EGGS[k].e} ${EGGS[k].n}</span><button onclick="buy('e','${k}',${EGGS[k].c})">${EGGS[k].c}</button></div>`;
+        if(tab==='mut') for(let k in MUT_TYPES) c.innerHTML += `<div class="ui-item"><span>🧪 ${k}</span><button onclick="buy('m','${k}',150000)">150к</button></div>`;
         if(tab==='dec') {
-            c.innerHTML += `<div class="ui-item"><span>🟩 +5 Грядок</span><button class="btn" onclick="buy('d','plots',${p.plots*2000})">${p.plots*2000}</button></div>`;
-            c.innerHTML += `<div class="ui-item"><span>🪵 Забор</span><button class="btn" onclick="buy('d','fence',200000)">200к</button></div>`;
-            c.innerHTML += `<div class="ui-item"><span>✨ Грядки-люкс</span><button class="btn" onclick="buy('d','gold',100000)">100к</button></div>`;
+            c.innerHTML += `<div class="ui-item"><span>🟩 +5 Грядок</span><button onclick="buy('d','plots',${p.plots*2000})">${p.plots*2000}</button></div>`;
+            c.innerHTML += `<div class="ui-item"><span>✨ Золоті грядки</span><button onclick="buy('d','gold',100000)">100к</button></div>`;
         }
     }
 
@@ -215,7 +217,7 @@
         if(type==='s') p.seeds[id] = (p.seeds[id]||0)+1;
         if(type==='e') p.eggsInv[id] = (p.eggsInv[id]||0)+1;
         if(type==='m') p.mutations.push(id);
-        if(type==='d') { if(id==='plots') p.plots+=5; if(id==='fence') p.fence=true; if(id==='gold') p.goldPlots=true; renderGarden(); }
+        if(type==='d') { if(id==='plots') p.plots+=5; if(id==='gold') p.goldPlots=true; renderGarden(); }
         updateUI(); renderInv();
     }
 
@@ -224,11 +226,12 @@
         selPets = []; selMutIdx = -1;
         const c = document.getElementById('mut-selection'); c.innerHTML = 'Оберіть 2-х пітомців та мутацію:<br>';
         p.pets.forEach((pet, i) => c.innerHTML += `<div class="ui-item"><span>${pet.e} ${pet.n}</span><div class="check-box" onclick="this.classList.toggle('active');togglePet(${i})"></div></div>`);
-        p.mutations.forEach((m, i) => c.innerHTML += `<div class="ui-item"><span>🧪 ${m}</span><div class="check-box mut-chk" onclick="selectMutation(${i},this)"></div></div>`);
+        p.mutations.forEach((m, i) => c.innerHTML += `<div class="ui-item"><span>🧪 ${m}</span><div class="check-box mut-chk" onclick="selectMut(${i},this)"></div></div>`);
     }
 
     function togglePet(i) { if(selPets.includes(i)) selPets = selPets.filter(x=>x!==i); else if(selPets.length<2) selPets.push(i); }
-    function selectMutation(i,el) { document.querySelectorAll('.mut-chk').forEach(b=>b.classList.remove('active')); el.classList.add('active'); selMutIdx=i; }
+    function selectMut(i,el) { document.querySelectorAll('.mut-chk').forEach(b=>b.classList.remove('active')); el.classList.add('active'); selMutIdx=i; }
+    
     function doMutation() {
         if(selPets.length<2 || selMutIdx===-1) return;
         p.pets.push({n:'Мутант', e:'🧬', mut: p.mutations[selMutIdx]});
@@ -237,49 +240,23 @@
         closeMut(); renderPets();
     }
 
+    function usePromo() {
+        const code = document.getElementById('promo-input').value.trim();
+        if(p.usedPromos.includes(code)) return;
+        if(code === 'BORIS') { p.pets.push({n:'Кіт Борис', e:'🐈'}); p.usedPromos.push(code); }
+        else if(code === '2026') { p.coins += 20260; p.usedPromos.push(code); }
+        else if(code === 'FreeEgg') { p.eggsInv['normal'] = (p.eggsInv['normal']||0)+1; p.usedPromos.push(code); }
+        else if(code === 'Free10000') { p.coins += 10000; p.usedPromos.push(code); }
+        document.getElementById('promo-input').value = ""; updateUI(); renderInv();
+    }
+
     function sellAll() {
         let total = 0; let mult = 1;
-        p.pets.forEach(pet => { if(pet.mut==='Золота') mult+=1; if(pet.mut==='Нічна') mult+=0.5; });
-        for(let t in p.storage) { if(t !== p.favFruit) { total += p.storage[t] * PLANTS[t].s * mult; p.storage[t] = 0; } }
+        p.pets.forEach(pet => { if(pet.mut==='Золота') mult+=1; });
+        for(let t in p.storage) { total += p.storage[t] * PLANTS[t].s * mult; p.storage[t] = 0; }
         p.coins += total; updateUI(); renderStorage();
     }
 
-    function openPromo() { document.getElementById('promo-modal').style.display='block'; }
-    function usePromo() {
-        const code = document.getElementById('promo-input').value.trim();
-        if(p.usedPromos.includes(code)) { alert("Вже використано!"); return; }
-        
-        if(code === 'BORIS') {
-            p.pets.push({n:'Кіт Борис', e:'🐈'});
-            p.usedPromos.push(code);
-            alert("Активовано: Кіт Борис! 🐈");
-        } else if(code === '2026') {
-            p.coins += 20260;
-            p.usedPromos.push(code);
-            alert("Отримано 20,260 монет! 🎄");
-        } else if(code === 'FreeEgg') {
-            p.eggsInv['normal'] = (p.eggsInv['normal']||0) + 1;
-            p.usedPromos.push(code);
-            alert("Отримано Звичайне Яйце! 🥚");
-        } else if(code === 'Free10000') {
-            p.coins += 10000;
-            p.usedPromos.push(code);
-            alert("Отримано 10,000 монет! 🪙");
-        } else {
-            alert("Невірний код!");
-            return;
-        }
-        
-        document.getElementById('promo-input').value = "";
-        updateUI(); renderInv(); renderPets();
-    }
-
-    function renderPets() {
-        const c = document.getElementById('pets-content'); c.innerHTML = '';
-        p.pets.forEach(pet => c.innerHTML += `<div class="ui-item"><span>${pet.e} ${pet.n}</span><b style="color:${MUT_TYPES[pet.mut]||'white'}">${pet.mut||''}</b></div>`);
-    }
-
-    function setFav(t) { p.favFruit = (p.favFruit===t?null:t); renderStorage(); }
     function updateUI() { 
         document.getElementById('ui-coins').innerText = Math.floor(p.coins); 
         document.getElementById('ui-coins-side').innerText = Math.floor(p.coins); 
@@ -287,6 +264,7 @@
         let sTotal = 0; for(let t in p.storage) sTotal += p.storage[t];
         document.getElementById('ui-storage-val').innerText = sTotal;
     }
+
     function tab(t) { 
         document.getElementById('seeds-list').style.display = t==='seeds'?'block':'none';
         document.getElementById('pets-list').style.display = t==='pets'?'block':'none';
@@ -296,9 +274,11 @@
         document.getElementById('t3').className = t==='storage'?'tab-btn active':'tab-btn';
         if(t==='pets') renderPets();
     }
-    function save() { if(p.name) localStorage.setItem('fg_v2026_'+p.name, JSON.stringify(p)); }
+
+    function save() { if(p.name) localStorage.setItem('fg_full_v2_'+p.name, JSON.stringify(p)); }
     function openShop() { document.getElementById('shop-modal').style.display='block'; renderShop('seeds'); }
     function closeShop() { document.getElementById('shop-modal').style.display='none'; }
+    function openPromo() { document.getElementById('promo-modal').style.display='block'; }
     function closeMut() { document.getElementById('mut-modal').style.display='none'; }
 </script>
 </body>
